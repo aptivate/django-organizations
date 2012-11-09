@@ -9,6 +9,7 @@ from django.http import Http404
 from django.shortcuts import render, redirect
 from django.template import Context, loader
 from django.utils.translation import ugettext as _
+from django.contrib.auth.models import User
 
 from organizations.backends.tokens import RegistrationTokenGenerator
 from organizations.backends.forms import (UserRegistrationForm,
@@ -26,7 +27,7 @@ class BaseBackend(object):
     """
 
     def __init__(self, *args, **kwargs):
-        self.user_model = get_user_model()
+        self.user_model = User
 
     def get_urls(self):
         raise NotImplementedError

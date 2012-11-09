@@ -3,11 +3,11 @@ from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.db.models import permalink, get_model
 from django.utils.translation import ugettext_lazy as _
-
 from django_extensions.db.fields import AutoSlugField
 from django_extensions.db.models import TimeStampedModel
 from organizations.managers import OrgManager, ActiveOrgManager
 
+from django.contrib.auth.models import User
 
 def get_user_model():
     """Returns the User model which should be used. This functionality won't be
@@ -34,7 +34,7 @@ class Organization(TimeStampedModel):
     slug = AutoSlugField(max_length=100, blank=False, editable=True,
             populate_from='name', unique=True,
             help_text=_("The name in all lowercase, suitable for URL identification"))
-    users = models.ManyToManyField(get_user_model(), through="OrganizationUser")
+    users = models.ManyToManyField(User, through="OrganizationUser")
     is_active = models.BooleanField(default=True)
 
     objects = OrgManager()
@@ -87,7 +87,7 @@ class OrganizationUser(TimeStampedModel):
     and the contrib.auth application.
 
     """
-    user = models.ForeignKey(get_user_model(), related_name="organization_users")
+    user = models.ForeignKey(User, related_name="organization_users")
     organization = models.ForeignKey(Organization,
             related_name="organization_users")
     is_admin = models.BooleanField(default=False)
