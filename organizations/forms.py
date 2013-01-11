@@ -9,6 +9,9 @@ from organizations.backends import invitation_backend
 
 class OrganizationForm(forms.ModelForm):
     """Form class for updating Organizations"""
+    error_css_class = 'error'
+    required_css_class = 'required'
+
     owner = forms.ModelChoiceField(OrganizationUser.objects.all())
 
     def __init__(self, request, *args, **kwargs):
@@ -38,6 +41,8 @@ class OrganizationForm(forms.ModelForm):
 
 class OrganizationUserForm(forms.ModelForm):
     """Form class for updating OrganizationUsers"""
+    error_css_class = 'error'
+    required_css_class = 'required'
 
     class Meta:
         model = OrganizationUser
@@ -52,6 +57,9 @@ class OrganizationUserForm(forms.ModelForm):
 
 class OrganizationUserAddForm(forms.ModelForm):
     """Form class for adding OrganizationUsers to an existing Organization"""
+    error_css_class = 'error'
+    required_css_class = 'required'
+
     email = forms.EmailField(max_length=75)
 
     def __init__(self, request, organization, *args, **kwargs):
@@ -95,9 +103,12 @@ class OrganizationAddForm(forms.ModelForm):
     Form class for creating a new organization, complete with new owner, including a
     User instance, OrganizationUser instance, and OrganizationOwner instance.
     """
+    error_css_class = 'error'
+    required_css_class = 'required'
+    
     email = forms.EmailField(max_length=30,
-            help_text=_("The email address for the account owner"))
-
+            help_text=_("The email address for the account owner."))
+    
     def __init__(self, request, *args, **kwargs):
         self.request = request
         super(OrganizationAddForm, self).__init__(*args, **kwargs)
@@ -128,8 +139,11 @@ class SignUpForm(forms.Form):
     """
     From class for signing up a new user and new account.
     """
+    error_css_class = 'error'
+    required_css_class = 'required'
+    
     name = forms.CharField(max_length=50,
-            help_text=_("The name of the organization"))
+            help_text=_("The name of the organization."))
     slug = forms.SlugField(max_length=50,
-            help_text=_("The name in all lowercase, suitable for URL identification"))
+            help_text=_("The name in all lowercase, suitable for URL identification."))
     email = forms.EmailField()

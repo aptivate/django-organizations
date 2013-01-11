@@ -31,10 +31,10 @@ class Organization(TimeStampedModel):
 
     """
     name = models.CharField(max_length=100,
-            help_text=_("The name of the organization"))
+            help_text=_("The name of the organization."))
     slug = AutoSlugField(max_length=100, blank=False, editable=True,
             populate_from='name', unique=True,
-            help_text=_("The name in all lowercase, suitable for URL identification"))
+            help_text=_("The name in all lowercase, suitable for URL identification."))
     users = models.ManyToManyField(USER_MODEL, through="OrganizationUser")
     is_active = models.BooleanField(default=True)
 
