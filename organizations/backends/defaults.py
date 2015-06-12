@@ -1,7 +1,10 @@
 import uuid
 
 from django.conf import settings
-from django.conf.urls.defaults import patterns, url
+try:
+    from django.conf.urls.defaults import patterns, url
+except ImportError:
+    from django.conf.urls import patterns, url
 from django.contrib.auth import authenticate, login
 from django.core.urlresolvers import reverse
 from django.core.mail import EmailMessage
@@ -106,7 +109,7 @@ class BaseBackend(object):
 
         subject_template = loader.get_template(subject_template)
         body_template = loader.get_template(body_template)
-        subject = subject_template.render(ctx).strip() # Remove stray newline characters
+        subject = subject_template.render(ctx).strip()  # Remove stray newline characters
         body = body_template.render(ctx)
         return EmailMessage(subject, body, from_email, [user.email],
                 headers).send()
@@ -228,7 +231,7 @@ class InvitationBackend(BaseBackend):
             user.save()
         self.send_invitation(user, sender, **kwargs)
         return user
-    
+
     def send_invitation(self, user, sender=None, **kwargs):
         """An intermediary function for sending an invitation email that
         selects the templates, generating the token, and ensuring that the user
@@ -247,7 +250,7 @@ class NotificationBackend(BaseBackend):
     """
     notification_subject = 'organizations/email/notification_subject.txt'
     notification_body = 'organizations/email/notification_body.html'
-    
+
     def notify_by_email(self, email, sender=None, request=None, **kwargs):
         """Sends an active user a notification email
         """
@@ -259,4 +262,4 @@ class NotificationBackend(BaseBackend):
                     sender, **kwargs)
         except User.DoesNotExist:
             pass
-    
+
